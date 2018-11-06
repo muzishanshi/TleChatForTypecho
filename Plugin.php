@@ -21,7 +21,7 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
     // 插件配置面板
     public static function config(Typecho_Widget_Helper_Form $form){
 		$config=@unserialize(ltrim(file_get_contents(dirname(__FILE__).'/../../plugins/TleChat/config.php'),'<?php die; ?>'));
-		$json=file_get_contents('http://api.tongleer.com/interface/TleChat.php?action=update&version=1&domain='.$_SERVER['SERVER_NAME'].'&token='.$config["token"]);
+		$json=file_get_contents('https://tongleer.com/api/interface/TleChat.php?action=update&version=1&domain='.$_SERVER['SERVER_NAME'].'&token='.$config["token"]);
 		$result=json_decode($json,true);
 		$div=new Typecho_Widget_Helper_Layout();
 		$div->html('
@@ -38,7 +38,7 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
         $form->addInput($wechatUrl);
 		$aliUrl = new Typecho_Widget_Helper_Form_Element_Text('aliUrl', array('value'), 'HTTPS://QR.ALIPAY.COM/FKX03546YRHSVIW3YUK925', _t('支付宝支付二维码url'), _t('此处只是例子，可使用<a href="https://cli.im/deqr/" target="_blank">草料二维码</a>将二维码图片转成url地址填入其中，进入聊天室时需要重新填入该地址，此处只为保存之用。'));
         $form->addInput($aliUrl);
-		$token = new Typecho_Widget_Helper_Form_Element_Text('token', array('value'), '', _t('token'), _t('在<a href="http://www.tongleer.com/wp-login.php?action=register" target="_blank">同乐儿</a>注册并申请token后即为授权状态。'));
+		$token = new Typecho_Widget_Helper_Form_Element_Text('token', array('value'), '', _t('token'), _t('在<a href="http://www.tongleer.com/wp-login.php?action=register" target="_blank">同乐儿</a>注册并申请token后联系二呆绑定域名即为授权状态（未授权版仅可以发送文本消息）。'));
         $form->addInput($token);
 		
 		$token = @isset($_POST['token']) ? addslashes(trim($_POST['token'])) : '';
