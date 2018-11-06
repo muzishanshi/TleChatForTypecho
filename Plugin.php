@@ -26,7 +26,7 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 		$div=new Typecho_Widget_Helper_Layout();
 		$div->html('
 			版本检查：'.$result["content"].'
-			<iframe src="'.$result["url"].'" width="100%" height="700" scrolling = "no"></iframe>
+			<iframe src="'.urldecode($result["url"]).'" width="100%" height="700" scrolling = "no"></iframe>
 			<small style="color:#aaaaaa">站长聊天室插件为Typecho站长提供聊天室功能，让站长之间的联系更加友爱，支持文本、长文本、语音聊天、图片传输及站长之间的QQ、微信、支付宝打赏，共同建立一个友爱的站长联盟。</small>
 		');
 		$div->render();
