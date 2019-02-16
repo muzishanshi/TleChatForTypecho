@@ -21,7 +21,7 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
     // 插件配置面板
     public static function config(Typecho_Widget_Helper_Form $form){
 		$config=@unserialize(ltrim(file_get_contents(dirname(__FILE__).'/../../plugins/TleChat/config.php'),'<?php die; ?>'));
-		$json=file_get_contents('https://tongleer.com/api/interface/TleChat.php?action=update&version=1&domain='.$_SERVER['SERVER_NAME'].'&token='.$config["token"]);
+		$json=file_get_contents('https://www.tongleer.com/api/interface/TleChat.php?action=update&version=1&domain='.$_SERVER['SERVER_NAME'].'&token='.$config["token"]);
 		$result=json_decode($json,true);
 		$div=new Typecho_Widget_Helper_Layout();
 		$div->html('
