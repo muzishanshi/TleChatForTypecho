@@ -12,7 +12,7 @@
 #### 与我联系：
 作者：二呆<br />
 网站：http://www.tongleer.com/<br />
-QQ：2293338477<br />
+1元入群：http://joke.tongleer.com/331.html<br />
 Typecho版本的聊天室Github：https://github.com/muzishanshi/TleChatForTypecho<br />
 Emlog版本的聊天室Github：https://github.com/muzishanshi/TleChatForEmlog<br />
 Wordpress版本的聊天室Github：https://github.com/muzishanshi/TleChatForWordpress
