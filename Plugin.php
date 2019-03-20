@@ -38,7 +38,7 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 				<input type="button" id="createRoom" value="创建新聊天室" />
 				<script>
 					$("#clearAudio").click(function(){
-						$.post("'.$plug_url.'/TleChat/chat/update.php",{action:"clearAudio"},function(data){
+						$.post("'.$plug_url.'/TleChat/chat/clearAudio.php",{action:"clearAudio"},function(data){
 							alert("清空录音成功");
 						});
 					});
