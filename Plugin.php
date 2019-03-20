@@ -93,7 +93,11 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 		<div style="position:fixed;bottom:0;right:0;">
 			<button id="btnChatroom" class="layui-btn layui-btn-normal">聊天室</button>
 		</div>
-		<script src="https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			if(typeof($("body")!="object"){
+				document.write(\"<script src=https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js></script>\");
+			}
+		</script>
 		<script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
 		<script>
 		$("#btnChatroom").click(function(){
