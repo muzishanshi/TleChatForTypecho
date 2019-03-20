@@ -29,7 +29,8 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 		$result=json_decode($json,true);
 		$div=new Typecho_Widget_Helper_Layout();
 		$div->html('
-			版本检查：'.$result["content"].'
+			版本检查：'.$result["content"].'<br />
+			<small>注：若前台点击午反应，则可能是jquery冲突，只需把插件目录下Plugin.php中footer函数的加载jquery的代码删掉即可。</small>
 			<p>
 				<script src="https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 				<input type="hidden" id="objectId" value="'.$config_room["objectId"].'" />
@@ -93,11 +94,7 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 		<div style="position:fixed;bottom:0;right:0;">
 			<button id="btnChatroom" class="layui-btn layui-btn-normal">聊天室</button>
 		</div>
-		<script type="text/javascript">
-			if(typeof($("body")!="object"){
-				document.write(\"<script src=https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js></script>\");
-			}
-		</script>
+		<script src=https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js></script>
 		<script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
 		<script>
 		$("#btnChatroom").click(function(){
