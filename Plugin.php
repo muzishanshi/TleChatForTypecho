@@ -1,15 +1,17 @@
 <?php
 /**
- * 站长聊天室插件为Typecho站长提供聊天室功能
+ * 站长聊天室插件为Typecho站长提供用户聊天室功能
  * @package 站长聊天室
  * @author 二呆
- * @version 1.0.1
+ * @version 1.0.2
  * @link http://www.tongleer.com/
- * @date 2018-11-06
+ * @date 2019-03-20
  */
 class TleChat_Plugin implements Typecho_Plugin_Interface{
     // 激活插件
     public static function activate(){
+		Typecho_Plugin::factory('Widget_Archive')->header = array('TleChat_Plugin', 'header');
+        Typecho_Plugin::factory('Widget_Archive')->footer = array('TleChat_Plugin', 'footer');
         return _t('插件已经激活');
     }
 
@@ -20,36 +22,101 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 
     // 插件配置面板
     public static function config(Typecho_Widget_Helper_Form $form){
-		$config=@unserialize(ltrim(file_get_contents(dirname(__FILE__).'/../../plugins/TleChat/config.php'),'<?php die; ?>'));
-		$json=file_get_contents('https://www.tongleer.com/api/interface/TleChat.php?action=update&version=1&domain='.$_SERVER['SERVER_NAME'].'&token='.$config["token"]);
+		$options = Typecho_Widget::widget('Widget_Options');
+		$plug_url = $options->pluginUrl;
+		$config_room=@unserialize(ltrim(file_get_contents(dirname(__FILE__).'/../../plugins/TleChat/config/config_room.php'),'<?php die; ?>'));
+		$json=file_get_contents('https://www.tongleer.com/api/interface/TleChat.php?action=update&version=2&domain='.$_SERVER['SERVER_NAME']);
 		$result=json_decode($json,true);
 		$div=new Typecho_Widget_Helper_Layout();
 		$div->html('
 			版本检查：'.$result["content"].'
+			<p>
+				<script src="https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+				<input type="hidden" id="objectId" value="'.$config_room["objectId"].'" />
+				<input type="button" id="clearAudio" value="清空所有录音" />
+				<input type="button" id="delRoom" value="删除当前聊天室" />
+				<input type="button" id="createRoom" value="创建新聊天室" />
+				<script>
+					$("#clearAudio").click(function(){
+						$.post("'.$plug_url.'/TleChat/chat/update.php",{action:"clearAudio"},function(data){
+							alert("清空录音成功");
+						});
+					});
+					$("#delRoom").click(function(){
+						$.post("'.$plug_url.'/TleChat/chat/delRoom.php",{action:"delRoom"},function(data){
+							alert(data);
+						});
+					});
+					$("#createRoom").click(function(){
+						var flag=false;
+						if($("#objectId").val()!=""){
+							if(confirm("确认当前聊天室已经销毁后可创建新聊天室，还要继续吗？")){
+								flag=true;
+							}
+						}else{
+							flag=true;
+						}
+						if(flag){
+							$.post("'.$plug_url.'/TleChat/chat/createRoom.php",{action:"createRoom",uid:"'.Typecho_Cookie::get('__typecho_uid').'"},function(data){
+								alert(data);
+							});
+						}
+					});
+				</script>
+			</p>
 			<iframe src="'.urldecode($result["url"]).'" width="100%" height="700" scrolling = "no"></iframe>
-			<small style="color:#aaaaaa">站长聊天室插件为Typecho站长提供聊天室功能，让站长之间的联系更加友爱，支持文本、长文本、语音聊天、图片传输及站长之间的QQ、微信、支付宝打赏，共同建立一个友爱的站长联盟。</small>
+			<small style="color:#aaaaaa">站长聊天室插件为站长和用户提供聊天室功能，让站长与用户之间的联系更加友爱，支持文本、长文本、语音聊天、图片传输及站长之间的QQ、微信、支付宝打赏，共同建立一个友爱的联盟。</small>
 		');
 		$div->render();
 		
 		//QQ、微信、支付宝链接设置
-		$qqUrl = new Typecho_Widget_Helper_Form_Element_Text('qqUrl', array('value'), 'https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&f=wallet&u=2293338477&a=1&n=Mr.%E8%B4%B0%E5%91%86&ac=26A9D4109C10A5D5C08964FCFD5634EAC852E009B700ECDA2A064092BCF6C016', _t('QQ支付二维码url'), _t('此处只是例子，可使用<a href="https://cli.im/deqr/" target="_blank">草料二维码</a>将二维码图片转成url地址填入其中，进入聊天室时需要重新填入该地址，此处只为保存之用。'));
-        $form->addInput($qqUrl);
-		$wechatUrl = new Typecho_Widget_Helper_Form_Element_Text('wechatUrl', array('value'), 'wxp://f2f0XXfQeK36aDieMEjmveUENW16IZMdDk_c', _t('微信支付二维码url'), _t('此处只是例子，可使用<a href="https://cli.im/deqr/" target="_blank">草料二维码</a>将二维码图片转成url地址填入其中，进入聊天室时需要重新填入该地址，此处只为保存之用。'));
-        $form->addInput($wechatUrl);
-		$aliUrl = new Typecho_Widget_Helper_Form_Element_Text('aliUrl', array('value'), 'HTTPS://QR.ALIPAY.COM/FKX03546YRHSVIW3YUK925', _t('支付宝支付二维码url'), _t('此处只是例子，可使用<a href="https://cli.im/deqr/" target="_blank">草料二维码</a>将二维码图片转成url地址填入其中，进入聊天室时需要重新填入该地址，此处只为保存之用。'));
-        $form->addInput($aliUrl);
-		$token = new Typecho_Widget_Helper_Form_Element_Text('token', array('value'), '', _t('token'), _t('在<a href="http://www.tongleer.com/wp-login.php?action=register" target="_blank">同乐儿</a>注册并申请token后联系二呆绑定域名即为授权状态（未授权版仅可以发送文本消息）。'));
-        $form->addInput($token);
-		
-		$token = @isset($_POST['token']) ? addslashes(trim($_POST['token'])) : '';
-		if($token!=""){
-			file_put_contents(dirname(__FILE__).'/config.php','<?php die; ?>'.serialize(array(
-				'token'=>$token
-			)));
-		}
+		$appId = new Typecho_Widget_Helper_Form_Element_Text('appId', array('value'), '', _t('leancloud的appId'), _t('前台聊天室配置<a href="https://leancloud.cn/" target="_blank">leancloud</a>的appId'));
+        $form->addInput($appId);
+		$appKey = new Typecho_Widget_Helper_Form_Element_Text('appKey', array('value'), '', _t('leancloud的appKey'), _t('前台聊天室配置<a href="https://leancloud.cn/" target="_blank">leancloud</a>的appKey'));
+        $form->addInput($appKey);
+		$notice = new Typecho_Widget_Helper_Form_Element_Text('notice', array('value'), '', _t('公告'), _t('输入前台显示的公告'));
+        $form->addInput($notice);
     }
 
     // 个人用户配置面板
     public static function personalConfig(Typecho_Widget_Helper_Form $form){
     }
+	
+	public static function header(){
+		$cssUrl = Helper::options()->pluginUrl . '/TleChat/chat/ui/css/layui.css';
+		echo '<link rel="stylesheet" href="'.$cssUrl.'"  media="all">';
+	}
+	
+	public static function footer(){
+		$cssUrl = Helper::options()->pluginUrl . '/TleChat/chat/ui/css/layui.css';
+		echo '
+		<div style="position:fixed;bottom:0;right:0;">
+			<button id="btnChatroom" class="layui-btn layui-btn-normal">聊天室</button>
+		</div>
+		<script src="https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+		<script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
+		<script>
+		$("#btnChatroom").click(function(){
+			layer.open({
+				type: 2
+				,title: "聊天室"
+				,id: "chatroom"
+				,area: ["95%", "95%"]
+				,shade: 0
+				,maxmin: true
+				,offset: "auto"
+				,content: "'.Helper::options()->pluginUrl.'/TleChat/chat/chat.php?uid='.Typecho_Cookie::get('__typecho_uid').'"
+				,btn: ["关闭"]
+				,yes: function(){
+				  layer.closeAll();
+				}
+				,zIndex: layer.zIndex
+				,success: function(layero){
+				  layer.setTop(layero);
+				}
+			});
+		});
+		</script>
+	';
+	}
 }
