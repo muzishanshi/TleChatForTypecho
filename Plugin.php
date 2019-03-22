@@ -3,9 +3,9 @@
  * 站长聊天室插件为Typecho站长提供用户聊天室功能
  * @package 站长聊天室
  * @author 二呆
- * @version 1.0.2
+ * @version 1.0.3
  * @link http://www.tongleer.com/
- * @date 2019-03-20
+ * @date 2019-03-22
  */
 class TleChat_Plugin implements Typecho_Plugin_Interface{
     // 激活插件
@@ -25,7 +25,7 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 		$options = Typecho_Widget::widget('Widget_Options');
 		$plug_url = $options->pluginUrl;
 		$config_room=@unserialize(ltrim(file_get_contents(dirname(__FILE__).'/../../plugins/TleChat/config/config_room.php'),'<?php die; ?>'));
-		$json=file_get_contents('https://www.tongleer.com/api/interface/TleChat.php?action=update&version=2&domain='.$_SERVER['SERVER_NAME']);
+		$json=file_get_contents('https://www.tongleer.com/api/interface/TleChat.php?action=update&version=3&domain='.$_SERVER['SERVER_NAME']);
 		$result=json_decode($json,true);
 		$div=new Typecho_Widget_Helper_Layout();
 		$div->html('
@@ -95,7 +95,7 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 			<button id="btnChatroom" class="layui-btn layui-btn-normal">聊天室</button>
 		</div>
 		<script src=https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js></script>
-		<script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/layer/2.3/layer.js"></script>
 		<script>
 		$("#btnChatroom").click(function(){
 			layer.open({

@@ -30,8 +30,8 @@ $rowUser = $db->fetchRow($queryUser);
   <meta http-equiv="Cache-Control" content="no-siteapp" />
   <link rel="stylesheet" href="css/style.css" />
   <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-  <script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
-  <script src="https://cdn.bootcss.com/push.js/1.0.9/push.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/layer/2.3/layer.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.9/push.min.js"></script>
   <!--<script type="text/javascript" src="https://pv.sohu.com/cityjson?ie=utf-8"></script>-->
   <link rel="stylesheet" href="<?=Helper::options()->pluginUrl;?>/TleChat/chat/ui/css/amazeui.min.css"/>
   <link rel="stylesheet" href="<?=Helper::options()->pluginUrl;?>/TleChat/chat/ui/css/admin.css"  media="all">

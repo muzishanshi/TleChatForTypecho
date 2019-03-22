@@ -21,6 +21,10 @@ Emlog版本的聊天室Github：https://github.com/muzishanshi/TleChatForEmlog<b
 Wordpress版本的聊天室Github：https://github.com/muzishanshi/TleChatForWordpress
 
 #### 更新记录：
+2019-03-22
+
+	V1.0.3	修复了因cdn.bootcss.com中JS静态资源不可访问导致的js失效的问题。
+	
 2019-03-20
 
 	V1.0.2	新增前台聊天室、浏览器通知推送、及可清空录音、创建/删除聊天室操作。
