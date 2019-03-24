@@ -25,11 +25,9 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 		$options = Typecho_Widget::widget('Widget_Options');
 		$plug_url = $options->pluginUrl;
 		$config_room=@unserialize(ltrim(file_get_contents(dirname(__FILE__).'/../../plugins/TleChat/config/config_room.php'),'<?php die; ?>'));
-		$json=file_get_contents('https://www.tongleer.com/api/interface/TleChat.php?action=update&version=3&domain='.$_SERVER['SERVER_NAME']);
-		$result=json_decode($json,true);
 		$div=new Typecho_Widget_Helper_Layout();
 		$div->html('
-			版本检查：'.$result["content"].'<br />
+			版本检查：<span id="versionCode"></span><br />
 			<small>注：若前台点击午反应，则可能是jquery冲突，只需把插件目录下Plugin.php中footer函数的加载jquery的代码删掉即可。</small>
 			<p>
 				<script src="https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -38,6 +36,11 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 				<input type="button" id="delRoom" value="删除当前聊天室" />
 				<input type="button" id="createRoom" value="创建新聊天室" />
 				<script>
+					$.post("'.$plug_url.'/TleChat/update.php",{version:3},function(data){
+						var data=JSON.parse(data);
+						$("#versionCode").html(data.content);
+						$("#chatUrl").html(\'<iframe src="\'+decodeURIComponent(data.url)+\'" width="100%" height="700" scrolling = "no"></iframe>\');
+					});
 					$("#clearAudio").click(function(){
 						$.post("'.$plug_url.'/TleChat/chat/clearAudio.php",{action:"clearAudio"},function(data){
 							alert("清空录音成功");
@@ -65,7 +68,7 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 					});
 				</script>
 			</p>
-			<iframe src="'.urldecode($result["url"]).'" width="100%" height="700" scrolling = "no"></iframe>
+			<div id="chatUrl"></div>
 			<small style="color:#aaaaaa">站长聊天室插件为站长和用户提供聊天室功能，让站长与用户之间的联系更加友爱，支持文本、长文本、语音聊天、图片传输及站长之间的QQ、微信、支付宝打赏，共同建立一个友爱的联盟。</small>
 		');
 		$div->render();
