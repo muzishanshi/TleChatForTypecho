@@ -3,7 +3,7 @@
  * 站长聊天室插件为Typecho站长提供用户聊天室功能
  * @package 站长聊天室
  * @author 二呆
- * @version 1.0.3
+ * @version 1.0.4
  * @link http://www.tongleer.com/
  * @date 2019-03-22
  */
@@ -36,7 +36,7 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 				<input type="button" id="delRoom" value="删除当前聊天室" />
 				<input type="button" id="createRoom" value="创建新聊天室" />
 				<script>
-					$.post("'.$plug_url.'/TleChat/update.php",{version:3},function(data){
+					$.post("'.$plug_url.'/TleChat/update.php",{version:4},function(data){
 						var data=JSON.parse(data);
 						$("#versionCode").html(data.content);
 						$("#chatUrl").html(\'<iframe src="\'+decodeURIComponent(data.url)+\'" width="100%" height="700" scrolling = "no"></iframe>\');

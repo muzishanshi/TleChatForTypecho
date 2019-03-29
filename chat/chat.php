@@ -644,7 +644,7 @@ $rowUser = $db->fetchRow($queryUser);
 	}
 
 	function createImage(url) {
-	  return '<img alt="" src="' + encodeHTML(url) + '" />';
+	  return '<img alt="" src="' + encodeHTML(url) + '" width="100%" />';
 	}
 
 	function createAudio(url) {

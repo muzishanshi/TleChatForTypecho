@@ -21,6 +21,10 @@ Emlog版本的聊天室Github：https://github.com/muzishanshi/TleChatForEmlog<b
 Wordpress版本的聊天室Github：https://github.com/muzishanshi/TleChatForWordpress
 
 #### 更新记录：
+2019-03-29
+
+	V1.0.4	修复了图片宽度为100%
+	
 2019-03-22
 
 	V1.0.3	修复了因cdn.bootcss.com中JS静态资源不可访问导致的js失效的问题。
