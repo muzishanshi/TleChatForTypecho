@@ -8,8 +8,33 @@ if($action=="ip"){
 	echo client_ip(0,true);
 }else if($action=="audio"){
 	$mp3Name = isset($_POST['mp3Name']) ? addslashes(trim($_POST['mp3Name'])) : '';
-	move_uploaded_file(@$_FILES['file']['tmp_name'], dirname(__FILE__)."/upload/audio/".$mp3Name);
-	echo Helper::options()->pluginUrl."/TleChat/chat/upload/audio/".$mp3Name;
+	
+	$audiodir=dirname(__FILE__)."/upload/audio/";
+	if(!is_dir($audiodir)){mkdir ($audiodir, 0777, true );}
+	
+	if($_FILES['file']['error']!=0){
+		$json=json_encode(array("status"=>"upload error","msg"=>"上传文件出错"));
+		echo $json;
+		exit;
+	}
+	if($_FILES['file']['size']>1024*1024*5){
+		$json=json_encode(array("status"=>"upload too large","msg"=>"上传语音过大"));
+		echo $json;
+		exit;
+	}
+	$audio_type = array('mp3');
+	$audio_extension = strtolower(pathinfo($mp3Name,  PATHINFO_EXTENSION));
+	if (!in_array($audio_extension, $audio_type)) {
+		$json=json_encode(array("status"=>"upload format error","msg"=>"上传语音格式出错"));
+		echo $json;
+		exit;
+	}
+	
+	move_uploaded_file(@$_FILES['file']['tmp_name'], $audiodir.$mp3Name);
+	$mp3url=Helper::options()->pluginUrl."/TleChat/chat/upload/audio/".$mp3Name;
+	$json=json_encode(array("status"=>"upload success","msg"=>"上传成功","mp3url"=>$mp3url));
+	echo $json;
+	exit;
 }
 /**
  * 获取客户端IP地址

@@ -7,20 +7,32 @@
 <img src="https://ws3.sinaimg.cn/large/005V7SQ5gy1g19e6qzxzyj30zm0hadif.jpg" />
 
 #### 使用方法：
-第一步：下载本插件，放在 `usr/plugins/` 目录中（插件文件夹名必须为TleChat）；<br />
-第二步：激活插件；<br />
-第三步：填写配置；<br />
+第一步：下载本插件，放在 `usr/plugins/` 目录中（插件文件夹名必须为TleChat）；
+
+第二步：激活插件；
+
+第三步：填写配置；
+
 第四步：完成。
 
 #### 与我联系：
-作者：二呆<br />
-网站：http://www.tongleer.com/<br />
-1元入群：http://joke.tongleer.com/331.html<br />
-Typecho版本的聊天室Github：https://github.com/muzishanshi/TleChatForTypecho<br />
-Emlog版本的聊天室Github：https://github.com/muzishanshi/TleChatForEmlog<br />
+作者：二呆
+
+网站：http://www.tongleer.com/
+
+1元入群：http://joke.tongleer.com/331.html
+
+Typecho版本的聊天室Github：https://github.com/muzishanshi/TleChatForTypecho
+
+Emlog版本的聊天室Github：https://github.com/muzishanshi/TleChatForEmlog
+
 Wordpress版本的聊天室Github：https://github.com/muzishanshi/TleChatForWordpress
 
 #### 更新记录：
+2019-04-08
+
+	V1.0.5	为录制语音增加文章格式、大小判断。
+	
 2019-03-29
 
 	V1.0.4	修复了图片宽度为100%
