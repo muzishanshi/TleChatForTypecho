@@ -521,13 +521,13 @@ $rowUser = $db->fetchRow($queryUser);
 			var fromHtml='<li class="am-comment"><a href="https://wpa.qq.com/msgrd?v=3&uin='+message.getAttributes().qq+'&site=qq&menu=yes" target=_blank><img src="https://q1.qlogo.cn/g?b=qq&nk='+(message.getAttributes().qq!=""?message.getAttributes().qq:1)+'&s=100" alt="" class="am-comment-avatar" width="16" height="16"></a><div class="am-comment-main"><header class="am-comment-hd"><div class="am-comment-meta"><a href="javascript:;" target=_blank class="am-comment-author">'+encodeHTML(from)+'</a> 评论于 <time datetime="'+formatTime(message.timestamp)+'" title="'+formatTime(message.timestamp)+'">'+formatTime(message.timestamp)+'</time> '+ip+'';
 		}
 		if(message.getAttributes().qqUrl!=""){
-			var qqUrl=' <a href=https://www.tongleer.com/api/web/?action=qrcode&url='+urlEncode(message.getAttributes().qqUrl)+' target=_blank title="QQ打赏"><img src="https://ws3.sinaimg.cn/large/ecabade5ly1fwwykb7jpsj201c01ca9z.jpg" width="16" /></a>';
+			var qqUrl=' <a href=https://www.tongleer.com/api/web/?action=qrcode&url='+urlEncode(message.getAttributes().qqUrl)+' target=_blank title="QQ打赏"><img src="https://ae01.alicdn.com/kf/H836219789bb14fe7896852f9e2a730726.jpg" width="16" /></a>';
 		}
 		if(message.getAttributes().wxUrl!=""){
-			var wxUrl=' <a href=https://www.tongleer.com/api/web/?action=qrcode&url='+urlEncode(message.getAttributes().wxUrl)+' target=_blank title="微信打赏"><img src="https://ws3.sinaimg.cn/large/ecabade5ly1fwwykbkttmj201c01c3yd.jpg" width="16" /></a>';
+			var wxUrl=' <a href=https://www.tongleer.com/api/web/?action=qrcode&url='+urlEncode(message.getAttributes().wxUrl)+' target=_blank title="微信打赏"><img src="https://ae01.alicdn.com/kf/H8e5d46adbc8749a2b42df4d6e4048639u.jpg" width="16" /></a>';
 		}
 		if(message.getAttributes().aliUrl!=""){
-			var aliUrl=' <a href=https://www.tongleer.com/api/web/?action=qrcode&url='+urlEncode(message.getAttributes().aliUrl)+' target=_blank title="支付宝打赏"><img src="https://ws3.sinaimg.cn/large/ecabade5ly1fwwykaow9ij201c01cmx1.jpg" width="16" /></a>';
+			var aliUrl=' <a href=https://www.tongleer.com/api/web/?action=qrcode&url='+urlEncode(message.getAttributes().aliUrl)+' target=_blank title="支付宝打赏"><img src="https://ae01.alicdn.com/kf/H1333aeb6c850469fb28e223902e14661S.jpg" width="16" /></a>';
 		}
 		var color="",isFloat="";
 		if(isBefore){
