@@ -29,6 +29,10 @@ Emlog版本的聊天室Github：https://github.com/muzishanshi/TleChatForEmlog
 Wordpress版本的聊天室Github：https://github.com/muzishanshi/TleChatForWordpress
 
 #### 更新记录：
+2019-10-02 V1.0.6
+
+	修复因加载cloudflare的layer.js失效导致的bug。
+
 2019-04-08
 
 	V1.0.5	为录制语音增加文章格式、大小判断。

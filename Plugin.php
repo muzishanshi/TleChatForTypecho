@@ -3,11 +3,11 @@
  * 站长聊天室插件为Typecho站长提供用户聊天室功能
  * @package 站长聊天室
  * @author 二呆
- * @version 1.0.5
+ * @version 1.0.6
  * @link http://www.tongleer.com/
- * @date 2019-04-08
+ * @date 2019-10-02
  */
-define('TLECHAT_VERSION', '5');
+define('TLECHAT_VERSION', '6');
 class TleChat_Plugin implements Typecho_Plugin_Interface{
     // 激活插件
     public static function activate(){
@@ -99,26 +99,29 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 			<button id="btnChatroom" class="layui-btn layui-btn-normal">聊天室</button>
 		</div>
 		<script src=https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/layer/2.3/layer.js"></script>
+		<script src="https://www.tongleer.com/api/web/include/layui/layui.js"></script>
 		<script>
-		$("#btnChatroom").click(function(){
-			layer.open({
-				type: 2
-				,title: "聊天室"
-				,id: "chatroom"
-				,area: ["95%", "95%"]
-				,shade: 0
-				,maxmin: true
-				,offset: "auto"
-				,content: "'.Helper::options()->pluginUrl.'/TleChat/chat/chat.php?uid='.Typecho_Cookie::get('__typecho_uid').'"
-				,btn: ["关闭"]
-				,yes: function(){
-				  layer.closeAll();
-				}
-				,zIndex: layer.zIndex
-				,success: function(layero){
-				  layer.setTop(layero);
-				}
+		layui.use("layer", function(){
+			var $ = layui.jquery, layer = layui.layer;
+			$("#btnChatroom").click(function(){
+				layer.open({
+					type: 2
+					,title: "聊天室"
+					,id: "chatroom"
+					,area: ["95%", "95%"]
+					,shade: 0
+					,maxmin: true
+					,offset: "auto"
+					,content: "'.Helper::options()->pluginUrl.'/TleChat/chat/chat.php?uid='.Typecho_Cookie::get('__typecho_uid').'"
+					,btn: ["关闭"]
+					,yes: function(){
+					  layer.closeAll();
+					}
+					,zIndex: layer.zIndex
+					,success: function(layero){
+					  layer.setTop(layero);
+					}
+				});
 			});
 		});
 		</script>

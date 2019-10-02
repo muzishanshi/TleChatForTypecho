@@ -30,8 +30,8 @@ $rowUser = $db->fetchRow($queryUser);
   <meta http-equiv="Cache-Control" content="no-siteapp" />
   <link rel="stylesheet" href="css/style.css" />
   <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/layer/2.3/layer.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.9/push.min.js"></script>
+  <script src="https://www.tongleer.com/api/web/include/layui/layui.js"></script>
+  <script src="js/push.min.js"></script>
   <!--<script type="text/javascript" src="https://pv.sohu.com/cityjson?ie=utf-8"></script>-->
   <link rel="stylesheet" href="<?=Helper::options()->pluginUrl;?>/TleChat/chat/ui/css/amazeui.min.css"/>
   <link rel="stylesheet" href="<?=Helper::options()->pluginUrl;?>/TleChat/chat/ui/css/admin.css"  media="all">
@@ -231,133 +231,136 @@ $rowUser = $db->fetchRow($queryUser);
 	});
 	var isJoin=false;
 	function main() {
-	  if (!roomId) {
-		layer.msg("请先创建聊天室");
-		return;
-	  }
-	  if (inputName==null) {
-		layer.msg("请先登录");
-		return;
-	  }
-	  var val = inputName.value;
-	  if (val) {
-		clientId = val;
-	  }
-	  if(blackFlag){
-		if(isBlacked()){
-			
-		}
-	  }
-	  setCookie("inputSiteUrl",inputSiteUrl.value,24);
-	  setCookie("inputQq",inputQq.value,24);
-	  setCookie("inputQqUrl",inputQqUrl.value,24);
-	  setCookie("inputWxUrl",inputWxUrl.value,24);
-	  setCookie("inputAliUrl",inputAliUrl.value,24);
-	  inputName.disabled="false";
-	  openBtn.style.display="none";
-	  quitBtn.style.display="inline";
-	  showLog('<span class="am-badge">正在连接，请等待。。。</span>');
-	  if (!firstFlag) {
-		client.close();
-	  }
-	  /*创建实时通信实例*/
-	  realtime = new AV.Realtime({
-		appId: appId,
-		appKey: appKey,
-		plugins: AV.TypedMessagesPlugin,
-	  });
-	  /*创建聊天客户端*/
-	  realtime.createIMClient(clientId)
-	  .then(function(c) {
-		showLog('<span class="am-badge am-badge-success">连接成功！</span>');
+		layui.use("layer", function(){
+		  var $ = layui.jquery, layer = layui.layer;
+		  if (!roomId) {
+			layer.msg("请先创建聊天室");
+			return;
+		  }
+		  if (inputName==null) {
+			layer.msg("请先登录");
+			return;
+		  }
+		  var val = inputName.value;
+		  if (val) {
+			clientId = val;
+		  }
 		  if(blackFlag){
-			
+			if(isBlacked()){
+				
+			}
 		  }
-		firstFlag = false;
-		idClickEd=false;
-		client = c;
-		client.on('disconnect', function() {
-		  showLog('<span class="am-badge am-badge-secondary">正在重新连接，请耐心等待。。。</span>');
-		});
-		/*获取对话*/
-		return c.getConversation(roomId);
-	  })
-	  .then(function(conversation) {
-		if (conversation) {
-		  return conversation;
-		} else {
-		  /*如果服务器端不存在这个 conversation*/
-		  showLog('<span class="am-badge am-badge-secondary">房间不存在，创建了一个新的。</span>');
-		  return client.createConversation({
-			name: 'Typecho-Conversation',
-			members: [
-			  /*默认包含当前用户*/
-			  /*'Who'*/
-			],
-			/*创建暂态的聊天室（暂态聊天室支持无限人员聊天，但是不支持存储历史）*/
-			/*transient: true,*/
-			/*默认的数据，可以放 conversation 属性等*/
-			attributes: {
-			  test: ''
-			}
-		  }).then(function(conversation) {
-			showLog('<span class="am-badge am-badge-success">创建新房间成功</span>', "");
-			roomId = conversation.id;
-			return conversation;
+		  setCookie("inputSiteUrl",inputSiteUrl.value,24);
+		  setCookie("inputQq",inputQq.value,24);
+		  setCookie("inputQqUrl",inputQqUrl.value,24);
+		  setCookie("inputWxUrl",inputWxUrl.value,24);
+		  setCookie("inputAliUrl",inputAliUrl.value,24);
+		  inputName.disabled="false";
+		  openBtn.style.display="none";
+		  quitBtn.style.display="inline";
+		  showLog('<span class="am-badge">正在连接，请等待。。。</span>');
+		  if (!firstFlag) {
+			client.close();
+		  }
+		  /*创建实时通信实例*/
+		  realtime = new AV.Realtime({
+			appId: appId,
+			appKey: appKey,
+			plugins: AV.TypedMessagesPlugin,
 		  });
-		}
-	  })
-	  .then(function(conversation) {
-		return conversation.join();
-	  })
-	  .then(function(conversation) {
-		var members = "";
-		members += '<div class="am-panel-bd">';
-		var k=0;
-		for (var i = 0; i < 63;i++){
-			if(k>=conversation.members.length){
-				break;
-			}
-			members += '<ul class="am-avg-sm-10 blog-team">';
-				for(var j = 0; j < 9;j++){
-					if(k<conversation.members.length){
-						members += " <li>" + conversation.members[k] + "</li>";
-						k++;
-					}
+		  /*创建聊天客户端*/
+		  realtime.createIMClient(clientId)
+		  .then(function(c) {
+			showLog('<span class="am-badge am-badge-success">连接成功！</span>');
+			  if(blackFlag){
+				
+			  }
+			firstFlag = false;
+			idClickEd=false;
+			client = c;
+			client.on('disconnect', function() {
+			  showLog('<span class="am-badge am-badge-secondary">正在重新连接，请耐心等待。。。</span>');
+			});
+			/*获取对话*/
+			return c.getConversation(roomId);
+		  })
+		  .then(function(conversation) {
+			if (conversation) {
+			  return conversation;
+			} else {
+			  /*如果服务器端不存在这个 conversation*/
+			  showLog('<span class="am-badge am-badge-secondary">房间不存在，创建了一个新的。</span>');
+			  return client.createConversation({
+				name: 'Typecho-Conversation',
+				members: [
+				  /*默认包含当前用户*/
+				  /*'Who'*/
+				],
+				/*创建暂态的聊天室（暂态聊天室支持无限人员聊天，但是不支持存储历史）*/
+				/*transient: true,*/
+				/*默认的数据，可以放 conversation 属性等*/
+				attributes: {
+				  test: ''
 				}
-			members += "</ul>";
-		}
-		members += "</div></section>";
-		showLog('<section class="am-panel am-panel-default"><div class="am-panel-hd">当前房间的成员列表共'+conversation.members.length+'人（最多可容纳500人）</div>', members,false,"#DDDDDD");
-		if (conversation.members.length > 500) {
-		  return conversation.remove(conversation.members[0]).then(function(conversation) {
-			showLog('<span class="am-badge am-badge-danger">人数过多，踢掉：</span> ', conversation.members[0],false,"#CCCCCC");
+			  }).then(function(conversation) {
+				showLog('<span class="am-badge am-badge-success">创建新房间成功</span>', "");
+				roomId = conversation.id;
+				return conversation;
+			  });
+			}
+		  })
+		  .then(function(conversation) {
+			return conversation.join();
+		  })
+		  .then(function(conversation) {
+			var members = "";
+			members += '<div class="am-panel-bd">';
+			var k=0;
+			for (var i = 0; i < 63;i++){
+				if(k>=conversation.members.length){
+					break;
+				}
+				members += '<ul class="am-avg-sm-10 blog-team">';
+					for(var j = 0; j < 9;j++){
+						if(k<conversation.members.length){
+							members += " <li>" + conversation.members[k] + "</li>";
+							k++;
+						}
+					}
+				members += "</ul>";
+			}
+			members += "</div></section>";
+			showLog('<section class="am-panel am-panel-default"><div class="am-panel-hd">当前房间的成员列表共'+conversation.members.length+'人（最多可容纳500人）</div>', members,false,"#DDDDDD");
+			if (conversation.members.length > 500) {
+			  return conversation.remove(conversation.members[0]).then(function(conversation) {
+				showLog('<span class="am-badge am-badge-danger">人数过多，踢掉：</span> ', conversation.members[0],false,"#CCCCCC");
+				return conversation;
+			  });
+			}
 			return conversation;
-		  });
-		}
-		return conversation;
-	  })
-	  .then(function(conversation) {
-		/*获取聊天历史*/
-		room = conversation;
-		messageIterator = conversation.createMessagesIterator();
-		getLog(function() {
-		  printWall.scrollTop = printWall.scrollHeight;
-		  showLog('<span class="am-badge am-badge-success">已经加入房间，可以开始聊天。</span>');
-		  isJoin=true;
+		  })
+		  .then(function(conversation) {
+			/*获取聊天历史*/
+			room = conversation;
+			messageIterator = conversation.createMessagesIterator();
+			getLog(function() {
+			  printWall.scrollTop = printWall.scrollHeight;
+			  showLog('<span class="am-badge am-badge-success">已经加入房间，可以开始聊天。</span>');
+			  isJoin=true;
+			});
+			/*房间接受消息*/
+			conversation.on('message', function(message) {
+			  if (!msgTime) {
+				/*存储下最早的一个消息时间戳*/
+				msgTime = message.timestamp;
+			  }
+			  showMsg(message);
+			});
+		  })
+		  .catch(function(err) {
+			console.error(err);
+		  })
 		});
-		/*房间接受消息*/
-		conversation.on('message', function(message) {
-		  if (!msgTime) {
-			/*存储下最早的一个消息时间戳*/
-			msgTime = message.timestamp;
-		  }
-		  showMsg(message);
-		});
-	  })
-	  .catch(function(err) {
-		console.error(err);
-	  })
 	}
 	
 	function sendMsg() {
