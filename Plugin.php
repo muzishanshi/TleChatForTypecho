@@ -29,7 +29,7 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 		$div=new Typecho_Widget_Helper_Layout();
 		$div->html('
 			版本检查：<span id="versionCode"></span><br />
-			<small>注：若前台点击午反应，则可能是jquery冲突，只需把插件目录下Plugin.php中footer函数的加载jquery的代码删掉即可。</small>
+			填写并提交下面（<a href="https://leancloud.cn/" target="_blank">leancloud</a>）参数后再进行创建、删除、清空聊天室操作。
 			<p>
 				<script src="https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 				<input type="hidden" id="objectId" value="'.$config_room["objectId"].'" />
@@ -74,6 +74,11 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 		');
 		$div->render();
 		
+		$isEnableJQuery = new Typecho_Widget_Helper_Form_Element_Radio('isEnableJQuery', array(
+            'y'=>_t('是'),
+            'n'=>_t('否')
+        ), 'y', _t('是否加载JQuery'), _t("用于解决jquery冲突的问题，如果主题head中自带jquery，需要选择否；如果主题中未加载jquery，则需要选择是。"));
+		$form->addInput($isEnableJQuery->addRule('enum', _t(''), array('y', 'n')));
 		//QQ、微信、支付宝链接设置
 		$appId = new Typecho_Widget_Helper_Form_Element_Text('appId', array('value'), '', _t('leancloud的appId'), _t('前台聊天室配置<a href="https://leancloud.cn/" target="_blank">leancloud</a>的appId'));
         $form->addInput($appId);
@@ -90,6 +95,11 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 	public static function header(){
 		$cssUrl = Helper::options()->pluginUrl . '/TleChat/chat/ui/css/layui.css';
 		echo '<link rel="stylesheet" href="'.$cssUrl.'"  media="all">';
+		$options = Typecho_Widget::widget('Widget_Options');
+		$option=$options->plugin('TleChat');
+		if($option->isEnableJQuery=="y"){
+			echo '<script src="https://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>';
+		}
 	}
 	
 	public static function footer(){
@@ -98,7 +108,6 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 		<div style="position:fixed;bottom:0;right:0;">
 			<button id="btnChatroom" class="layui-btn layui-btn-normal">聊天室</button>
 		</div>
-		<script src=https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js></script>
 		<script src="https://www.tongleer.com/api/web/include/layui/layui.js"></script>
 		<script>
 		layui.use("layer", function(){
