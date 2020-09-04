@@ -1,9 +1,9 @@
-### TleChatForTypecho站长聊天室插件
+### TleChatForTypecho即时聊天插件（站长聊天室插件）
 ---
 
 站长聊天室插件为站长和用户提供聊天室功能，让站长与用户之间的联系更加友爱，支持文本、长文本、语音聊天、图片传输及站长之间的QQ、微信、支付宝打赏，共同建立一个友爱的联盟。
 
-#### 插件截图：
+#### 新版插件截图：
 Typecho1.1版本
 <img src="https://ae03.alicdn.com/kf/U448fbf20d0f646fea7ab04170a70385fI.jpg" alt="" />
 Typecho1.2版本
@@ -12,7 +12,8 @@ Typecho1.5/19.10.15版本
 <img src="https://ae03.alicdn.com/kf/U5ae0dc7054024fc1a83dbbb0f02088b1C.jpg" alt="" />
 Typecho1.5/19.10.20版本
 <img src="https://ae03.alicdn.com/kf/U5dc46fb5be7a4e5cb2bc57b9535ac034q.jpg" alt="" />
-早期版本
+
+#### 旧版插件截图：
 <img src="https://ae01.alicdn.com/kf/H46302702289f4fdbabf5a513bff9f1bdB.png" />
 
 #### 使用方法：
@@ -28,8 +29,6 @@ Typecho1.5/19.10.20版本
 作者：二呆
 
 网站：http://www.tongleer.com/
-
-1元入群：http://joke.tongleer.com/331.html
 
 Typecho版本的聊天室Github：https://github.com/muzishanshi/TleChatForTypecho
 
