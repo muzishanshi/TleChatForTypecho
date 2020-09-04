@@ -4,7 +4,7 @@ $options = Typecho_Widget::widget('Widget_Options');
 $option=$options->plugin('TleChat');
 $db = Typecho_Db::get();
 
-$config_room=@unserialize(ltrim(file_get_contents(dirname(__FILE__).'/../../../plugins/TleChat/config/config_room.php'),'<?php die; ?>'));
+$get=TleChat_Plugin::getOptions();
 
 $queryTitle= $db->select("value")->from('table.options')->where('name = ?', "title"); 
 $rowTitle = $db->fetchRow($queryTitle);
@@ -131,8 +131,9 @@ $rowUser = $db->fetchRow($queryUser);
 					<input id="input-send" lay-verify="required" placeholder="输入聊天内容" autocomplete="off" class="am-form-field am-input-sm input-send">
 					<button id="send-btn" class="am-btn am-btn-secondary am-btn-sm">发送</button>
 					<button id="send-btn-as-file" class="am-btn am-btn-secondary am-btn-sm">发送长文本</button>
+					<!--
 					<button id="send-btn-record" class="am-btn am-btn-secondary am-btn-sm">按住说话</button>
-					
+					-->
 					<div id="send-btn-photo-div" class="am-form-group am-form-file">
 					  <button type="button" class="am-btn am-btn-danger am-btn-sm">
 						<i class="am-icon-cloud-upload"></i> <span id="file-list">选择要上传的文件</span></button>
@@ -177,7 +178,7 @@ $rowUser = $db->fetchRow($queryUser);
 <script>
 	Push.Permission.request();
 
-	var roomId = '<?=$config_room["objectId"];?>';
+	var roomId = '<?=@$get["objectId"];?>';
 	var appId = '<?=$option->appId;?>';
 	var appKey = '<?=$option->appKey;?>';
 	

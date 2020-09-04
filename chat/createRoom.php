@@ -9,7 +9,7 @@ $query = $db->select('value')->from('table.options')->where('name = ?', 'plugin:
 $result = $db->fetchAll($query);
 $pluginOption = unserialize($result[0]["value"]);
 
-if(!isset($pluginOption["appId"])||!isset($pluginOption["appKey"])){echo('有未填写参数');exit;}
+if(empty($pluginOption["appId"])||empty($pluginOption["appKey"])){echo('有未填写参数');exit;}
 $action = isset($_POST['action']) ? addslashes($_POST['action']) : '';
 if($action=="createRoom"){
 	$uid = isset($_POST['uid']) ? addslashes($_POST['uid']) : '';
@@ -21,10 +21,10 @@ if($action=="createRoom"){
 	$nickname=$rowUser['screenName']?$rowUser['screenName']:$rowUser['name'];
 	$result=createRoom($rowOption["value"],array($nickname), $pluginOption["appId"], $pluginOption["appKey"]);
 
-	file_put_contents(dirname(__FILE__).'/../../../plugins/TleChat/config/config_room.php','<?php die; ?>'.serialize(array(
-		'objectId'=>$result["objectId"],
-		'createdAt'=>$result["createdAt"]
-	)));
+	$get=TleChat_Plugin::getOptions();
+	$get["objectId"]=$result["objectId"];
+	$get["createdAt"]=$result["createdAt"];
+	TleChat_Plugin::saveOptions($get);
 
 	echo('创建成功');exit;
 }

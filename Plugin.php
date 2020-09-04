@@ -11,6 +11,9 @@ define('TLECHAT_VERSION', '6');
 class TleChat_Plugin implements Typecho_Plugin_Interface{
     // 激活插件
     public static function activate(){
+		$get=TleChat_Plugin::getOptions();
+		TleChat_Plugin::saveOptions($get);
+		
 		Typecho_Plugin::factory('Widget_Archive')->header = array('TleChat_Plugin', 'header');
         Typecho_Plugin::factory('Widget_Archive')->footer = array('TleChat_Plugin', 'footer');
         return _t('插件已经激活');
@@ -25,14 +28,18 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
     public static function config(Typecho_Widget_Helper_Form $form){
 		$options = Typecho_Widget::widget('Widget_Options');
 		$plug_url = $options->pluginUrl;
-		$config_room=@unserialize(ltrim(file_get_contents(dirname(__FILE__).'/../../plugins/TleChat/config/config_room.php'),'<?php die; ?>'));
+		$get=TleChat_Plugin::getOptions();
 		$div=new Typecho_Widget_Helper_Layout();
 		$div->html('
 			版本检查：<span id="versionCode"></span><br />
-			填写并提交下面（<a href="https://leancloud.cn/" target="_blank">leancloud</a>）参数后再进行创建、删除、清空聊天室操作。
+			温馨提示：
+			<br />
+			1、此页面为<font color="red">旧版</font>站长聊天室功能，填写并提交下面（<a href="https://leancloud.cn/" target="_blank"><font color="blue">leancloud</font></a>）参数后再进行创建、删除、清空聊天室操作。
+			<br />
+			2、若使用<font color="red">新版</font>的<font color="blue">即时聊天</font>插件，体验更多聊天室功能，则需要更新插件。
 			<p>
 				<script src="https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-				<input type="hidden" id="objectId" value="'.$config_room["objectId"].'" />
+				<input type="hidden" id="objectId" value="'.@$get["objectId"].'" />
 				<input type="button" id="clearAudio" value="清空所有录音" />
 				<input type="button" id="delRoom" value="删除当前聊天室" />
 				<input type="button" id="createRoom" value="创建新聊天室" />
@@ -92,6 +99,82 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
     public static function personalConfig(Typecho_Widget_Helper_Form $form){
     }
 	
+	public static function getOptions(){
+		$db = Typecho_Db::get();
+		$query= $db->select('value')->from('table.options')->where('name = ?', 'plugin-custom:TleChat'); 
+		$row = $db->fetchRow($query);
+		$themeOption=array();
+		if($row){
+			$themeOption = unserialize(stripslashes($row["value"]));
+		}
+		unset($db);
+		return $themeOption;
+	}
+	public static function saveOptions($data){
+		$db = Typecho_Db::get();
+		$query= $db->select('value')->from('table.options')->where('name = ?', 'plugin-custom:TleChat'); 
+		$row = $db->fetchRow($query);
+		$themeOption=array();
+		if($row){
+			$update = $db->update('table.options')->rows(array('value'=>addslashes(serialize($data))))->where('name=?',"plugin-custom:TleChat");
+			$updateRows= $db->query($update);
+		}else{
+			$insert = $db->insert('table.options')->rows(array('value' => addslashes(serialize($data)), 'name' => 'plugin-custom:TleChat'));
+			$insertId = $db->query($insert);
+		}
+		unset($db);
+	}
+	
+	/**
+	 * 发起一个请求到指定接口
+	 * @param string $url 请求的接口
+	 * @param array $body 参数
+	 * @param int $header 头
+	 * @param int $method 请求方式
+	 * @return string json请求结果
+	 */
+	public static function tle_chat_curl($url, $body, $header = array(), $method = "POST", $token = ""){
+		array_push($header, 'Accept:application/json');
+		array_push($header, 'Content-Type:application/json');
+		array_push($header, 'http:multipart/form-data');
+		array_push($header, 'Authorization:Bearer '.$token);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		switch ($method){ 
+			case "GET" : 
+				curl_setopt($ch, CURLOPT_HTTPGET, true);
+			break; 
+			case "POST": 
+				curl_setopt($ch, CURLOPT_POST,true); 
+			break; 
+			case "PUT" : 
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); 
+			break; 
+			case "DELETE":
+				curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, "DELETE"); 
+			break; 
+		}
+		curl_setopt($ch, CURLOPT_USERAGENT, 'SSTS Browser/1.0');
+		curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		if (isset($body{3}) > 0) {
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+		}
+		if (count($header) > 0) {
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		}
+		$ret = curl_exec($ch);
+		$err = curl_error($ch);
+		curl_close($ch);
+		if ($err) {
+			return $err;
+		}
+		return $ret;
+	}
+	
 	public static function header(){
 		$cssUrl = Helper::options()->pluginUrl . '/TleChat/chat/ui/css/layui.css';
 		echo '<link rel="stylesheet" href="'.$cssUrl.'"  media="all">';
@@ -105,8 +188,8 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 	public static function footer(){
 		$cssUrl = Helper::options()->pluginUrl . '/TleChat/chat/ui/css/layui.css';
 		echo '
-		<div style="position:fixed;bottom:0;right:0;">
-			<button id="btnChatroom" class="layui-btn layui-btn-normal">聊天室</button>
+		<div style="position:fixed;bottom:60px;right:2%;z-index:999999;">
+			<button id="btnChatroom" class="layui-btn layui-btn-xs">聊天室</button>
 		</div>
 		<script src="https://www.tongleer.com/api/web/include/layui/layui.js"></script>
 		<script>
