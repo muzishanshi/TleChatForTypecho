@@ -47,7 +47,7 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 					$.post("'.$plug_url.'/TleChat/update.php",{version:'.TLECHAT_VERSION.'},function(data){
 						var data=JSON.parse(data);
 						$("#versionCode").html(data.content);
-						$("#chatUrl").html(\'<iframe src="\'+decodeURIComponent(data.url)+\'" width="100%" height="800" scrolling = "no"></iframe>\');
+						$("#chatUrl").html(\'<a href="https://www.tongleer.com" target = "_blank">站长聊天室</a>&nbsp;|&nbsp;<a href="\'+decodeURIComponent(data.url)+\'" target = "_blank">站长直播间</a>\');
 					});
 					$("#clearAudio").click(function(){
 						$.post("'.$plug_url.'/TleChat/chat/clearAudio.php",{action:"clearAudio"},function(data){
