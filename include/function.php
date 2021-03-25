@@ -61,7 +61,7 @@ function createRoom($name,$users, $appId, $appKey){
  */
 function tlechat_httpCurl($url, $body, $header = array(), $method = "POST", $appId, $appKey){
     array_push($header, 'X-LC-Id: '.$appId);
-	array_push($header, 'X-LC-Key: '.$appKey);
+	array_push($header, 'X-LC-Key: '.$appKey.",master");
     array_push($header, 'Content-Type:application/json');
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60);
