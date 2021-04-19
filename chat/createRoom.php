@@ -9,7 +9,7 @@ $query = $db->select('value')->from('table.options')->where('name = ?', 'plugin:
 $result = $db->fetchAll($query);
 $pluginOption = unserialize($result[0]["value"]);
 
-if(empty($pluginOption["appId"])||empty($pluginOption["appKey"])){echo('有未填写参数');exit;}
+if(empty($pluginOption["appId"])||empty($pluginOption["MasterKey"])){echo('有未填写参数');exit;}
 $action = isset($_POST['action']) ? addslashes($_POST['action']) : '';
 if($action=="createRoom"){
 	$uid = isset($_POST['uid']) ? addslashes($_POST['uid']) : '';
@@ -19,7 +19,7 @@ if($action=="createRoom"){
 	$rowOption = $db->fetchRow($queryOption);
 	//创建聊天室
 	$nickname=$rowUser['screenName']?$rowUser['screenName']:$rowUser['name'];
-	$result=createRoom($rowOption["value"],array($nickname), $pluginOption["appId"], $pluginOption["appKey"]);
+	$result=createRoom($rowOption["value"],array($nickname), $pluginOption["appId"], $pluginOption["MasterKey"]);
 
 	$get=TleChat_Plugin::getOptions();
 	$get["objectId"]=$result["objectId"];

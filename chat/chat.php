@@ -182,7 +182,7 @@ $rowUser = $db->fetchRow($queryUser);
 	var appId = '<?=$option->appId;?>';
 	var appKey = '<?=$option->appKey;?>';
 	
-	AV.initialize(appId, appKey);
+	AV.init(appId, appKey);
 	
 	var clientId = '游客';
 	var realtime;

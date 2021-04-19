@@ -89,8 +89,10 @@ class TleChat_Plugin implements Typecho_Plugin_Interface{
 		//QQ、微信、支付宝链接设置
 		$appId = new Typecho_Widget_Helper_Form_Element_Text('appId', array('value'), '', _t('leancloud的appId'), _t('前台聊天室配置<a href="https://leancloud.cn/" target="_blank">leancloud</a>的appId'));
         $form->addInput($appId);
-		$appKey = new Typecho_Widget_Helper_Form_Element_Text('appKey', array('value'), '', _t('leancloud的MasterKey'), _t('前台聊天室配置<a href="https://leancloud.cn/" target="_blank">leancloud</a>的MasterKey'));
+		$appKey = new Typecho_Widget_Helper_Form_Element_Text('appKey', array('value'), '', _t('leancloud的appKey'), _t('前台聊天室配置<a href="https://leancloud.cn/" target="_blank">leancloud</a>的appKey'));
         $form->addInput($appKey);
+		$MasterKey = new Typecho_Widget_Helper_Form_Element_Text('MasterKey', array('value'), '', _t('leancloud的MasterKey'), _t('前台聊天室配置<a href="https://leancloud.cn/" target="_blank">leancloud</a>的MasterKey'));
+        $form->addInput($MasterKey);
 		$notice = new Typecho_Widget_Helper_Form_Element_Text('notice', array('value'), '', _t('公告'), _t('输入前台显示的公告'));
         $form->addInput($notice);
     }
