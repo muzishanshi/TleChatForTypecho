@@ -20,12 +20,14 @@ if($action=="createRoom"){
 	//创建聊天室
 	$nickname=$rowUser['screenName']?$rowUser['screenName']:$rowUser['name'];
 	$result=createRoom($rowOption["value"],array($nickname), $pluginOption["appId"], $pluginOption["MasterKey"]);
-
-	$get=TleChat_Plugin::getOptions();
-	$get["objectId"]=$result["objectId"];
-	$get["createdAt"]=$result["createdAt"];
-	TleChat_Plugin::saveOptions($get);
-
-	echo('创建成功');exit;
+	if(!empty($result["objectId"])){
+		$get=TleChat_Plugin::getOptions();
+		$get["objectId"]=$result["objectId"];
+		$get["createdAt"]=$result["createdAt"];
+		TleChat_Plugin::saveOptions($get);
+		echo('创建成功');exit;
+	}else{
+		echo('创建失败，请确认appid和MasterKey正确性。');exit;
+	}
 }
 ?>
